@@ -3,13 +3,10 @@ const User = require("../models/user");
 const Product = require("../models/product");
 const Menu = require("../models/menu");
 
-// Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/burger_db", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
-// Create users
+mongoose.connect("mongodb://localhost:27017/burgerDB");
+
+
 const usersData = [
   { username: "user1", password: "password1" },
   { username: "user2", password: "password2" },
@@ -20,15 +17,13 @@ User.insertMany(usersData)
   .then((users) => {
     console.log("Users added:", users);
 
-    // Create products
     const productsData = [];
     const productTypes = [
-      "Burger",
-      "Drink",
-      "Potato",
-      "Salad",
-      "Sauce",
-      "IceCream",
+      "Burgers",
+      "Boissons",
+      "Accompagnements",
+      "Sauces",
+      "Glaces",
     ];
     productTypes.forEach((type) => {
       for (let i = 1; i <= 3; i++) {
@@ -37,6 +32,7 @@ User.insertMany(usersData)
           description: `Description for ${type} ${i}`,
           price: Math.floor(Math.random() * 7) + 1,
           type: type,
+          imageSrc: "imagePath",
         });
       }
     });
@@ -45,7 +41,6 @@ User.insertMany(usersData)
       .then((products) => {
         console.log("Products added:", products);
 
-        // Create menus
         const menusData = [];
         const menuProducts = {};
         productTypes.forEach((type) => {
@@ -63,7 +58,7 @@ User.insertMany(usersData)
             menuProductsIds.reduce((acc, productId) => {
               const product = products.find((p) => p._id.equals(productId));
               return acc + product.price;
-            }, 0) * 0.7; // Apply 30% discount
+            }, 0) * 0.7; 
 
           const menu = {
             title: `Menu ${i}`,
@@ -71,6 +66,7 @@ User.insertMany(usersData)
             price: menuPrice.toFixed(2),
             size: "medium",
             products: menuProductsIds,
+            imageSrc: "imagePath",
           };
 
           menusData.push(menu);

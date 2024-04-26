@@ -1,0 +1,142 @@
+TOKEN : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
+
+#USER
+###
+POST http://localhost:2233/api/users/register
+Content-Type: application/json
+
+{
+  "username": "Ivan",
+  "password": "qwerty123"
+}
+
+###
+POST http://localhost:2233/api/users/login
+Content-Type: application/json
+
+{
+  "username": "IvanxDev",
+  "password": "Qwerty123@"
+}
+
+
+
+#MENUS
+###
+POST http://localhost:2233/api/menus/add
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
+Content-Type: application/json
+
+{
+  "title": "Menu Burger Classic",
+  "description": "Un delicieux burger classique avec accompagnement et une boisson",
+  "price": 9.99,
+  "size": "large"
+}
+
+###
+GET http://localhost:2233/api/menus
+
+###
+GET http://localhost:2233/api/menus/65c23f431690de71b504e218
+
+###
+PUT http://localhost:2233/api/menus/modify/65c383d44d0919bcffead049
+Content-Type: application/json
+
+
+{
+  "type": "Menu"
+}
+
+###
+DELETE http://localhost:2233/api/menus/delete/65c3692f74cec163f3405f2e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
+
+#PRODUCTS
+###
+POST http://localhost:2233/api/products/add
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
+Content-Type: application/json
+
+{
+  "title": "Classic Burger",
+  "description": "A classic cheese-beef burger",
+  "price": 5.99,
+  "inStock": true,
+  "type": "Burger",
+  "imageSrc": "ImagePath"
+}
+
+###
+GET http://localhost:2233/api/products
+
+###
+GET http://localhost:2233/api/products/65c23f431690de71b504e204
+
+###
+PUT http://localhost:2233/api/products/modify/:id
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
+Content-Type: application/json
+
+{
+  "price": 6.49,
+  "inStock": true
+}
+
+###
+DELETE http://localhost:2233/api/products/delete/:id
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
+
+
+###
+POST http://localhost:2233/api/orders/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
+Content-Type: application/json
+
+
+{
+  "items": [
+    {
+      "itemRef": "65c23f431690de71b504e204",
+      "onModel": "Product",
+      "quantity": 2,
+      "selectedOptions": {}
+    },
+    {
+      "itemRef": "65c23f431690de71b504e218",
+      "onModel": "Menu",
+      "quantity": 1,
+      "selectedOptions": {}
+    }
+  ],
+  "customer": {
+    "name": "Ivan",
+    "email": "yohanpetrov@hotmail.fr"
+  },
+  "totalPrice": 25.97
+}
+
+###
+POST http://localhost:2233/api/orders/add/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
+Content-Type: application/json
+
+     {
+  "items": [
+    {
+      "itemRef": "65c23f431690de71b504e204",
+      "onModel": "Product",
+      "quantity": 2,
+      "selectedOptions": {}
+    },
+    {
+      "itemRef": "65c23f431690de71b504e218",
+      "onModel": "Menu",
+      "quantity": 1,
+      "selectedOptions": {}
+    }
+  ],
+  "customer": "661e834ebe61a4489f63276e",
+  "totalPrice": 25.97
+}

@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
 
-const producSchema = new mongoose.Schema({
-  title: { type: "string", required: true },
-  description: { type: "string" },
-  price: { type: "number" },
-  inStock: { type: "boolean", default: false },
+const productSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String },
+  price: { type: Number },
+  inStock: { type: Boolean, default: true }, 
+  imageSrc: { type: String, required: true },
   type: {
-    type: "string",
-    enum: ["Burger", "Drink", "Potato", "Salad", "Sauce", "IceCream"],
+    type: String,
+    enum: ["Burgers", "Boissons", "Accompagnements", "Sauces", "Glaces"],
   },
 });
 
-module.exports = mongoose.model("Product", producSchema);
+module.exports = mongoose.model("Product", productSchema);
+
+
+
