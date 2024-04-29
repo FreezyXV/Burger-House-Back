@@ -17,7 +17,10 @@ const app = express();
 const PORT = process.env.PORT || 2233;
 
 // Utilisation du middleware CORS pour gérer les requêtes provenant d'origines différentes
-app.use(cors());
+app.use(cors({
+  origin:"burger-house-front.vercel.app",
+
+}));
 // Utilisation du middleware pour analyser le corps des requêtes en JSON
 app.use(express.json());
 
