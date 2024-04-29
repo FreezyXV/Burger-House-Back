@@ -1,5 +1,5 @@
 
-const BASE_URL = `http://localhost:2233/api`;
+const BASE_URL = `${meta.env.VITE_API_URL}/api`;
 
 // Afficher tous les Produits (hors Menus)
 export const getAllItems = async (type) => {

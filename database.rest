@@ -2,7 +2,7 @@ TOKEN : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ
 
 #USER
 ###
-POST http://localhost:2233/api/users/register
+POST ${meta.env.VITE_API_URL}/api/users/register
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:2233/api/users/login
+POST ${meta.env.VITE_API_URL}/api/users/login
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 
 #MENUS
 ###
-POST http://localhost:2233/api/menus/add
+POST ${meta.env.VITE_API_URL}/api/menus/add
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
 Content-Type: application/json
 
@@ -35,13 +35,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:2233/api/menus
+GET ${meta.env.VITE_API_URL}/api/menus
 
 ###
-GET http://localhost:2233/api/menus/65c23f431690de71b504e218
+GET ${meta.env.VITE_API_URL}/api/menus/65c23f431690de71b504e218
 
 ###
-PUT http://localhost:2233/api/menus/modify/65c383d44d0919bcffead049
+PUT ${meta.env.VITE_API_URL}/api/menus/modify/65c383d44d0919bcffead049
 Content-Type: application/json
 
 
@@ -50,12 +50,12 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:2233/api/menus/delete/65c3692f74cec163f3405f2e
+DELETE ${meta.env.VITE_API_URL}/api/menus/delete/65c3692f74cec163f3405f2e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
 
 #PRODUCTS
 ###
-POST http://localhost:2233/api/products/add
+POST ${meta.env.VITE_API_URL}/api/products/add
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
 Content-Type: application/json
 
@@ -69,13 +69,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:2233/api/products
+GET ${meta.env.VITE_API_URL}/api/products
 
 ###
-GET http://localhost:2233/api/products/65c23f431690de71b504e204
+GET ${meta.env.VITE_API_URL}/api/products/65c23f431690de71b504e204
 
 ###
-PUT http://localhost:2233/api/products/modify/:id
+PUT ${meta.env.VITE_API_URL}/api/products/modify/:id
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
 Content-Type: application/json
 
@@ -85,12 +85,12 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:2233/api/products/delete/:id
+DELETE ${meta.env.VITE_API_URL}/api/products/delete/:id
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
 
 
 ###
-POST http://localhost:2233/api/orders/
+POST ${meta.env.VITE_API_URL}/api/orders/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
 Content-Type: application/json
 
@@ -118,7 +118,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:2233/api/orders/add/
+POST ${meta.env.VITE_API_URL}/api/orders/add/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
 Content-Type: application/json
 
