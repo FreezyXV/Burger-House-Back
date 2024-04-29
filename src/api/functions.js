@@ -1,4 +1,3 @@
-
 const BASE_URL = `${meta.env.VITE_API_URL}/api`;
 
 // Afficher tous les Produits (hors Menus)
@@ -142,8 +141,6 @@ export const updateItem = async (type, id, updatedItem, authToken) => {
     throw error;
   }
 };
-
-
 
 // Valider une Commande
 export const submitOrder = async (orderPayload) => {

@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema(
       enum: ["pending", "processed", "ready"],
       default: "pending",
     },
-    customer: {type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    customer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
