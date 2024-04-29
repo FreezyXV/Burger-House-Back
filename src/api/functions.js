@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:2233/api";
+
+const BASE_URL = `http://localhost:2233/api`;
 
 // Afficher tous les Produits (hors Menus)
 export const getAllItems = async (type) => {
@@ -100,9 +101,9 @@ export async function getItemById(type, id) {
   var response = null;
 
   if (type === "Menu") {
-    response = await fetch(`http://localhost:2233/api/menus/${id}`);
+    response = await fetch(`${BASE_URL}/menus/${id}`);
   } else {
-    response = await fetch(`http://localhost:2233/api/products/${id}`);
+    response = await fetch(`${BASE_URL}/products/${id}`);
   }
 
   if (!response.ok) {
