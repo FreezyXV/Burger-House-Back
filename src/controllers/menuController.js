@@ -15,6 +15,7 @@ exports.createMenu = async (req, res) => {
 // Afficher tous les Menus
 exports.getAllMenus = async (req, res) => {
   try {
+    console.log('ici')
     const menus = await Menu.find({});
     res.status(200).json(menus);
   } catch (error) {
