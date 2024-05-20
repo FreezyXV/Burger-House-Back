@@ -27,6 +27,6 @@ npm run dev
 - Commit your app to a repository on github.com
 - Create an account on Vercel.com
 - Create a new project called burger-town-back
-- In the secrets section add the environment variable called `MONGO_URL=mongodb://your-mongo-url`
+- In the secrets section add the environment variable called `MONGO_URI=mongodb://your-mongo-url`
 - Link the project to your github repository corresponding to burger-town-back
 - Whenever you will push to your github repository, your app will be automatically deployed on vercel.

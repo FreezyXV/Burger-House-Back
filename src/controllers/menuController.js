@@ -15,7 +15,6 @@ exports.createMenu = async (req, res) => {
 // Afficher tous les Menus
 exports.getAllMenus = async (req, res) => {
   try {
-    console.log('ici')
     const menus = await Menu.find({});
     res.status(200).json(menus);
   } catch (error) {
@@ -43,11 +42,9 @@ exports.getMenuById = async (req, res) => {
 //Mettre à jour un Menu
 exports.editMenu = async (req, res) => {
   try {
-    const updatedMenu = await Menu.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const updatedMenu = await Menu.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!updatedMenu) {
       return res.status(404).json({ message: "Menu not found" });
     }
