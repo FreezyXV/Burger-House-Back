@@ -1,4 +1,4 @@
-// Importation des modules nécessaires
+// src/index.js
 const express = require("express"); // Framework web pour Node.js
 const dotenv = require("dotenv"); // Module pour charger les variables d'environnement à partir d'un fichier .env
 const cors = require("cors"); // Middleware pour gérer les problèmes de sécurité liés au CORS (Cross-Origin Resource Sharing)
