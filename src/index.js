@@ -1,59 +1,55 @@
-// Import necessary modules
-const express = require("express"); // Web framework for Node.js
-const dotenv = require("dotenv"); // Module to load environment variables from a .env file
-const cors = require("cors"); // Middleware to handle Cross-Origin Resource Sharing
-const mongoose = require("mongoose"); // ODM for MongoDB
-const productRoutes = require("./routes/productRoutes"); // Routes for managing products
-const menuRoutes = require("./routes/menuRoutes"); // Routes for managing menus
-const userRoutes = require("./routes/userRoutes"); // Routes for managing users
-const orderRoutes = require("./routes/orderRoutes"); // Routes for managing orders
+// Importation des modules nécessaires
+const express = require("express"); // Framework web pour Node.js
+const dotenv = require("dotenv"); // Module pour charger les variables d'environnement à partir d'un fichier .env
+const cors = require("cors"); // Middleware pour gérer les problèmes de sécurité liés au CORS (Cross-Origin Resource Sharing)
+const mongoose = require("mongoose"); // ODM (Object Data Modeling) pour MongoDB
+const productRoutes = require("./routes/productRoutes"); // Routes pour la gestion des produits
+const menuRoutes = require("./routes/menuRoutes"); // Routes pour la gestion des menus
+const userRoutes = require("./routes/userRoutes"); // Routes pour la gestion des utilisateurs
+const orderRoutes = require("./routes/orderRoutes"); // Routes pour la gestion des commandes
 
-// Load environment variables from .env file
+// Chargement des variables d'environnement à partir du fichier .env
 dotenv.config();
 
-// Initialize Express app
+// Initialisation de l'application Express
 const app = express();
-const PORT = process.env.PORT || 5000; // Define the port to listen on
+const PORT = process.env.PORT || 2233; // Définition du port sur lequel le serveur écoute
 
-// Configure CORS to allow requests from the frontend
+// Configuration du middleware CORS pour autoriser les requêtes provenant du frontend
 app.use(cors({
-  origin: "https://burger-house-front.vercel.app", // Allowed origin
-  // You can add more CORS configurations if needed
+  origin: "https://burger-house-front.vercel.app", // Origine autorisée
 }));
 
-// Middleware to parse JSON request bodies
+// Middleware pour parser les corps de requête JSON
 app.use(express.json());
 
-// Connect to MongoDB using the connection string from environment variables
+// Connexion à la base de données MongoDB
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB")) // Success message
-  .catch((err) => console.error("Could not connect to MongoDB:", err)); // Error message
+  .connect(process.env.MONGO_URI) // Utilise l'URI MongoDB définie dans les variables d'environnement
+  .then(() => console.log("Connected to MongoDB")) // Message de succès en cas de connexion réussie
+  .catch((err) => console.error("Could not connect to MongoDB:", err)); // Message d'erreur en cas d'échec
 
-// Base route to verify API functionality
+// Route de base pour vérifier le fonctionnement de l'API
 app.get("/", (req, res) => {
   res.send("Welcome to the Burger Shop API!");
 });
 
-// Use defined routes for different entities
+// Utilisation des routes définies pour les différentes entités de l'application
 app.use("/api/menus", menuRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 
-// Global error handling middleware
+// Middleware global de gestion des erreurs
 app.use((err, req, res, next) => {
-  console.error(err.stack); // Log error stack
-  res.status(err.status || 500).send({ message: err.message || "Something broke!" }); // Send error response
+  console.error(err.stack); // Journalise la pile d'erreurs
+  res.status(err.status || 500).send({ message: err.message || "Something broke!" }); // Envoie une réponse d'erreur au client
 });
 
-// Start the server and listen on the defined port
+// Démarrage du serveur pour écouter sur le port défini
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-// Export the app for testing or other modules
+// Exportation de l'application pour les tests ou pour d'autres modules
 module.exports = app;
