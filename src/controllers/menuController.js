@@ -1,6 +1,7 @@
+// controllers/menuController.js
 const Menu = require("../models/menu");
 
-//Créer un Menu
+// Créer un Menu
 exports.createMenu = async (req, res) => {
   try {
     const newMenu = new Menu(req.body);
@@ -24,7 +25,7 @@ exports.getAllMenus = async (req, res) => {
   }
 };
 
-//Afficher un Menu par son ID
+// Afficher un Menu par son ID
 exports.getMenuById = async (req, res) => {
   try {
     const menu = await Menu.findById(req.params.id);
@@ -39,7 +40,7 @@ exports.getMenuById = async (req, res) => {
   }
 };
 
-//Mettre à jour un Menu
+// Mettre à jour un Menu
 exports.editMenu = async (req, res) => {
   try {
     const updatedMenu = await Menu.findByIdAndUpdate(req.params.id, req.body, {
@@ -55,7 +56,7 @@ exports.editMenu = async (req, res) => {
   }
 };
 
-//Supprimer un Menu
+// Supprimer un Menu
 exports.deleteMenu = async (req, res) => {
   try {
     const menu = await Menu.findByIdAndDelete(req.params.id);

@@ -1,3 +1,4 @@
+// controllers/productController.js
 const Product = require("../models/product"); // Adjust the path as necessary
 
 // Créer un Produit
@@ -20,7 +21,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Aficher tous les Produits
+// Afficher tous les Produits
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({});
@@ -32,7 +33,7 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
-// Afficher le Produit  par son ID
+// Afficher le Produit par son ID
 exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -47,7 +48,7 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-//  Mettre à jour un Produit
+// Mettre à jour un Produit
 exports.updateProduct = async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -77,6 +78,3 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ message: "An error occurred during deletion." });
   }
 };
-
-
-

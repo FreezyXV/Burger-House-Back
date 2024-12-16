@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 2233; // Définition du port sur lequel le serv
 // Configuration du middleware CORS pour autoriser les requêtes provenant du frontend
 app.use(cors({
   origin: "https://burger-house-front.vercel.app", // Origine autorisée
+  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
 }));
 
 // Middleware pour parser les corps de requête JSON
@@ -25,7 +26,10 @@ app.use(express.json());
 
 // Connexion à la base de données MongoDB
 mongoose
-  .connect(process.env.MONGO_URI) // Utilise l'URI MongoDB définie dans les variables d'environnement
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }) // Utilise l'URI MongoDB définie dans les variables d'environnement
   .then(() => console.log("Connected to MongoDB")) // Message de succès en cas de connexion réussie
   .catch((err) => console.error("Could not connect to MongoDB:", err)); // Message d'erreur en cas d'échec
 
