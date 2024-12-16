@@ -1,8 +1,6 @@
-TOKEN : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
+### USER
 
-#USER
-###
-POST ${meta.env.VITE_API_URL}/api/users/register
+POST http://localhost:2233/api/users/register
 Content-Type: application/json
 
 {
@@ -11,19 +9,18 @@ Content-Type: application/json
 }
 
 ###
-POST ${meta.env.VITE_API_URL}/api/users/login
+
+POST http://localhost:2233/api/users/login
 Content-Type: application/json
 
 {
   "username": "IvanxDev",
-  "password": "Qwerty123@"
+  "password": "Qwerty123"
 }
 
+### MENUS
 
-
-#MENUS
-###
-POST ${meta.env.VITE_API_URL}/api/menus/add
+POST http://localhost:2233/api/menus/add
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
 Content-Type: application/json
 
@@ -35,27 +32,30 @@ Content-Type: application/json
 }
 
 ###
-GET ${meta.env.VITE_API_URL}/api/menus
+
+GET http://localhost:2233/api/menus
 
 ###
-GET ${meta.env.VITE_API_URL}/api/menus/65c23f431690de71b504e218
+
+GET http://localhost:2233/api/menus/65c23f431690de71b504e218
 
 ###
-PUT ${meta.env.VITE_API_URL}/api/menus/modify/65c383d44d0919bcffead049
+
+PUT http://localhost:2233/api/menus/modify/65c383d44d0919bcffead049
 Content-Type: application/json
-
 
 {
   "type": "Menu"
 }
 
 ###
-DELETE ${meta.env.VITE_API_URL}/api/menus/delete/65c3692f74cec163f3405f2e
+
+DELETE http://localhost:2233/api/menus/delete/65c3692f74cec163f3405f2e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
 
-#PRODUCTS
-###
-POST ${meta.env.VITE_API_URL}/api/products/add
+### PRODUCTS
+
+POST http://localhost:2233/api/products/add
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
 Content-Type: application/json
 
@@ -69,13 +69,16 @@ Content-Type: application/json
 }
 
 ###
-GET ${meta.env.VITE_API_URL}/api/products
+
+GET http://localhost:2233/api/products
 
 ###
-GET ${meta.env.VITE_API_URL}/api/products/65c23f431690de71b504e204
+
+GET http://localhost:2233/api/products/65c23f431690de71b504e204
 
 ###
-PUT ${meta.env.VITE_API_URL}/api/products/modify/:id
+
+PUT http://localhost:2233/api/products/modify/65c23f431690de71b504e204
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
 Content-Type: application/json
 
@@ -85,44 +88,17 @@ Content-Type: application/json
 }
 
 ###
-DELETE ${meta.env.VITE_API_URL}/api/products/delete/:id
+
+DELETE http://localhost:2233/api/products/delete/65c23f431690de71b504e204
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWMzNjJlYjU4OWY3ZTYwOGQwMWQ4YjUiLCJpYXQiOjE3MTAwMTY0OTQsImV4cCI6MTcxMDYyMTI5NH0.fXstxosLDCCKK5GfDycU8bZ_udAi9ddw5O5OJVKiaFk
 
+### ORDERS
 
-###
-POST ${meta.env.VITE_API_URL}/api/orders/
+POST http://localhost:2233/api/orders/add
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
 Content-Type: application/json
-
 
 {
-  "items": [
-    {
-      "itemRef": "65c23f431690de71b504e204",
-      "onModel": "Product",
-      "quantity": 2,
-      "selectedOptions": {}
-    },
-    {
-      "itemRef": "65c23f431690de71b504e218",
-      "onModel": "Menu",
-      "quantity": 1,
-      "selectedOptions": {}
-    }
-  ],
-  "customer": {
-    "name": "Ivan",
-    "email": "yohanpetrov@hotmail.fr"
-  },
-  "totalPrice": 25.97
-}
-
-###
-POST ${meta.env.VITE_API_URL}/api/orders/add/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFlODM0ZWJlNjFhNDQ4OWY2MzI3NmUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzEzMjgwMTI0LCJleHAiOjE3MTM4ODQ5MjR9.aYfeVASQnyv3j1NdVBLqS2d3XBOnDzzw6Tzq6VtQegE
-Content-Type: application/json
-
-     {
   "items": [
     {
       "itemRef": "65c23f431690de71b504e204",

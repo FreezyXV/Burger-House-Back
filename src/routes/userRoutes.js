@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController'); // Adjust the path as necessary
+const userController = require('../controllers/userController'); 
 const auth = require('../middlewares/auth');
 
 router.post('/register', userController.registerUser);
@@ -12,3 +12,6 @@ router.delete('/:id', auth, userController.deleteUser);
 router.put('/change-password/:userId', auth, userController.changePassword);
 
 module.exports = router;
+
+
+

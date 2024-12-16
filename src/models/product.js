@@ -8,7 +8,8 @@ const productSchema = new mongoose.Schema({
   imageSrc: { type: String, required: true },
   type: {
     type: String,
-    enum: ["Burgers", "Boissons", "Accompagnements", "Sauces", "Glaces"],
+    enum: ["Burgers", "Boissons", "Accompagnements", 
+    "Sauces", "Glaces"],
   },
 });
 
