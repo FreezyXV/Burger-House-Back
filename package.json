@@ -2,10 +2,10 @@
   "name": "back",
   "version": "1.0.0",
   "description": "Backend for Burger House MERN application",
-  "main": "index.js",
+  "main": "/Back/src/index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node /Back/src/index.js",
+    "dev": "nodemon /Back/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
