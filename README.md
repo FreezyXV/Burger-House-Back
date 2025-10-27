@@ -24,6 +24,335 @@ Le backend de **Burger Town** est une API REST développée avec **Node.js** et 
 - Protection des routes sensibles par JWT
 - Base de données MongoDB hébergée sur MongoDB Atlas
 
+### 📖 Comment Fonctionne le Backend - Vue d'Ensemble Complète
+
+Le backend est le **cœur de l'application**, agissant comme intermédiaire entre le frontend (interface utilisateur) et la base de données. Voici comment il fonctionne en détail :
+
+**1. Rôle du Backend dans l'Écosystème :**
+   ```
+   Frontend (React)
+        ↓
+   [Envoie requête HTTP]
+        ↓
+   Backend API (Node.js + Express) ← VOUS ÊTES ICI
+        ↓
+   [Traite la demande]
+        ↓
+   Base de données (MongoDB)
+        ↓
+   [Retourne données au frontend]
+   ```
+
+**2. Cycle de Vie d'une Requête - Exemple Complet :**
+
+   **Scénario : Un utilisateur veut voir tous les burgers disponibles**
+
+   ```
+   ÉTAPE 1 : Réception de la requête
+   ─────────────────────────────────
+   Le frontend envoie :
+   GET https://burger-house-back.fly.dev/api/products?type=Burgers
+
+   ÉTAPE 2 : Routage (routes/productRoutes.js)
+   ──────────────────────────────────────────
+   Express reçoit la requête et la dirige vers la route correspondante :
+   router.get('/', productController.getAllProducts)
+
+   ÉTAPE 3 : Contrôleur (controllers/productController.js)
+   ──────────────────────────────────────────────────────
+   Le contrôleur exécute la logique métier :
+   - Récupère le paramètre de requête : type = "Burgers"
+   - Appelle le modèle Mongoose pour interroger la base de données
+
+   ÉTAPE 4 : Modèle (models/product.js)
+   ────────────────────────────────────
+   Mongoose exécute la requête MongoDB :
+   Product.find({ type: "Burgers" })
+
+   ÉTAPE 5 : Base de données (MongoDB Atlas)
+   ────────────────────────────────────────
+   MongoDB recherche tous les documents dans la collection "products"
+   où le champ "type" est égal à "Burgers"
+
+   ÉTAPE 6 : Retour des données
+   ───────────────────────────
+   Les données remontent la chaîne :
+   MongoDB → Mongoose → Contrôleur → Express → Frontend
+
+   Réponse JSON :
+   [
+     { _id: "...", title: "Classic Burger", price: 8.50, ... },
+     { _id: "...", title: "Cheese Burger", price: 9.00, ... },
+     ...
+   ]
+   ```
+
+**3. Authentification JWT - Comment Ça Marche :**
+
+   **A. Inscription d'un nouvel utilisateur :**
+   ```
+   Frontend → POST /api/users/register
+              Body: { username, password, email, ... }
+                ↓
+   Backend reçoit les données
+                ↓
+   userController.registerUser() est appelé
+                ↓
+   1. Valide les données (express-validator)
+   2. Vérifie si l'utilisateur existe déjà
+   3. Hashe le mot de passe avec bcrypt :
+      password "motdepasse123" → "$2a$10$XYZ..." (impossible à inverser)
+   4. Crée l'utilisateur dans MongoDB
+   5. Retourne succès
+   ```
+
+   **B. Connexion d'un utilisateur :**
+   ```
+   Frontend → POST /api/users/login
+              Body: { username, password }
+                ↓
+   Backend vérifie les identifiants
+                ↓
+   1. Trouve l'utilisateur par username
+   2. Compare le mot de passe hashé avec bcrypt.compare()
+   3. Si valide, génère un JWT token :
+      Token = jwt.sign(
+        { userId: user._id, isAdmin: user.isAdmin },
+        JWT_SECRET,
+        { expiresIn: '24h' }
+      )
+   4. Retourne le token au frontend
+                ↓
+   Frontend stocke le token dans localStorage
+   ```
+
+   **C. Accès à une route protégée :**
+   ```
+   Frontend → POST /api/products/add (créer un produit)
+              Headers: { Authorization: "Bearer <token>" }
+              Body: { title, price, ... }
+                ↓
+   Backend applique le middleware auth.js
+                ↓
+   Middleware auth :
+   1. Extrait le token du header Authorization
+   2. Vérifie le token avec jwt.verify(token, JWT_SECRET)
+   3. Si valide, décode les données : { userId, isAdmin }
+   4. Ajoute ces infos à req.user
+   5. Passe au contrôleur suivant
+                ↓
+   productController.createProduct() :
+   - Vérifie req.user.isAdmin === true
+   - Si oui, crée le produit
+   - Si non, retourne erreur 403 Forbidden
+   ```
+
+**4. Gestion des Commandes - Workflow Complet :**
+
+   ```
+   Client passe une commande depuis le panier
+                ↓
+   Frontend → POST /api/orders/add
+              Body: {
+                customer: "user_id_123",
+                items: [
+                  { itemRef: "product_id_1", onModel: "Product", quantity: 2 },
+                  { itemRef: "menu_id_5", onModel: "Menu", quantity: 1 }
+                ],
+                totalPrice: 35.50
+              }
+                ↓
+   orderController.submitBackOrder() :
+
+   1. Validation des données :
+      - customer existe-t-il ? (vérification dans collection Users)
+      - items est-il un tableau non vide ?
+      - totalPrice est-il un nombre valide ?
+
+   2. Création du document Order :
+      const newOrder = new Order({
+        customer: ObjectId(customer),
+        items: items.map(item => ({
+          itemRef: ObjectId(item.itemRef),
+          onModel: item.onModel,
+          quantity: item.quantity
+        })),
+        totalPrice: totalPrice,
+        status: "pending"
+      });
+
+   3. Sauvegarde dans MongoDB :
+      await newOrder.save()
+
+   4. Réponse au frontend :
+      { success: true, order: newOrder }
+                ↓
+   Frontend affiche confirmation et vide le panier
+   ```
+
+**5. Sécurité - Couches de Protection :**
+
+   **Niveau 1 : Validation des données (express-validator)**
+   ```javascript
+   // Exemple : Validation de création de produit
+   router.post('/add',
+     body('title').notEmpty().withMessage('Le titre est requis'),
+     body('price').isNumeric().withMessage('Le prix doit être un nombre'),
+     // ...
+     productController.createProduct
+   );
+   ```
+
+   **Niveau 2 : Authentification (JWT)**
+   ```javascript
+   // Seuls les utilisateurs connectés peuvent accéder
+   router.post('/add', auth, productController.createProduct);
+   ```
+
+   **Niveau 3 : Autorisation (vérification des permissions)**
+   ```javascript
+   // Dans le contrôleur
+   if (!req.user.isAdmin) {
+     return res.status(403).json({ error: "Accès refusé" });
+   }
+   ```
+
+   **Niveau 4 : Hachage des mots de passe (bcrypt)**
+   ```javascript
+   // Jamais de mots de passe en clair !
+   const hashedPassword = await bcrypt.hash(password, 10);
+   ```
+
+   **Niveau 5 : CORS (Cross-Origin Resource Sharing)**
+   ```javascript
+   // Seul le frontend autorisé peut appeler l'API
+   app.use(cors({
+     origin: "https://burger-house-front.vercel.app"
+   }));
+   ```
+
+**6. Structure des Données - Relations MongoDB :**
+
+   ```
+   Collection "users"
+   ┌─────────────────────────┐
+   │ _id: ObjectId("abc123") │
+   │ username: "john_doe"    │
+   │ password: "$2a$10$..."  │ ← Hashé, jamais en clair
+   │ isAdmin: false          │
+   └─────────────────────────┘
+             ↑
+             │ Référencé par
+             │
+   Collection "orders"
+   ┌──────────────────────────────────┐
+   │ _id: ObjectId("order123")        │
+   │ customer: ObjectId("abc123") ────┘ (Référence vers User)
+   │ items: [                         │
+   │   {                              │
+   │     itemRef: ObjectId("burger1"),│ ─→ Référence vers Product
+   │     onModel: "Product",          │
+   │     quantity: 2                  │
+   │   },                             │
+   │   {                              │
+   │     itemRef: ObjectId("menu5"),  │ ─→ Référence vers Menu
+   │     onModel: "Menu",             │
+   │     quantity: 1                  │
+   │   }                              │
+   │ ],                               │
+   │ totalPrice: 35.50,               │
+   │ status: "pending"                │
+   └──────────────────────────────────┘
+   ```
+
+**7. Variables d'Environnement - Configuration :**
+
+   ```env
+   # Fichier .env (JAMAIS commité sur Git !)
+
+   PORT=2233
+   # Port sur lequel le serveur écoute
+
+   MONGO_URI=mongodb+srv://user:pass@cluster.mongodb.net/burgerDB
+   # Chaîne de connexion MongoDB Atlas
+   # Format : mongodb+srv://<utilisateur>:<motdepasse>@<cluster>/<database>
+
+   JWT_SECRET=ma_cle_secrete_ultra_longue_et_complexe_123456
+   # Clé pour signer les JWT (doit être TRÈS sécurisée)
+   # Si quelqu'un obtient cette clé, il peut créer des tokens valides !
+   ```
+
+**8. Déploiement sur Fly.io - Comment Ça Marche :**
+
+   ```
+   Développement local (http://localhost:2233)
+                ↓
+   Commit des changements sur Git
+                ↓
+   Commande : flyctl deploy
+                ↓
+   Fly.io :
+   1. Lit le Dockerfile
+   2. Construit l'image Docker avec Node.js et les dépendances
+   3. Démarre le conteneur
+   4. Configure les variables d'environnement (secrets Fly.io)
+   5. Active HTTPS automatiquement
+   6. Assigne l'URL : https://burger-house-back.fly.dev
+                ↓
+   Application accessible mondialement avec :
+   - HTTPS activé (certificat SSL automatique)
+   - Redémarrage automatique en cas d'erreur
+   - Scaling automatique selon le trafic
+   - Logs accessibles via : flyctl logs
+   ```
+
+**9. Monitoring et Debugging :**
+
+   **Vérifier si le serveur fonctionne :**
+   ```bash
+   # En local
+   npm run dev
+   # Ouvrir : http://localhost:2233
+   # Devrait afficher : "Welcome to the Burger Shop API!"
+
+   # En production
+   curl https://burger-house-back.fly.dev
+   # Devrait retourner : "Welcome to the Burger Shop API!"
+   ```
+
+   **Tester une route :**
+   ```bash
+   # Récupérer tous les produits
+   curl https://burger-house-back.fly.dev/api/products
+
+   # Connexion utilisateur
+   curl -X POST https://burger-house-back.fly.dev/api/users/login \
+     -H "Content-Type: application/json" \
+     -d '{"username":"test","password":"test123"}'
+   ```
+
+   **Logs d'erreur :**
+   ```bash
+   # Production (Fly.io)
+   flyctl logs
+
+   # Développement
+   Les erreurs s'affichent directement dans le terminal
+   ```
+
+**10. Points Clés à Retenir :**
+
+   - Le backend ne stocke PAS de sessions (stateless grâce aux JWT)
+   - Chaque requête est indépendante et doit contenir le token si elle est protégée
+   - MongoDB stocke les données sous forme de documents JSON flexibles
+   - Mongoose ajoute une couche de validation et de structure aux documents
+   - Les mots de passe sont TOUJOURS hachés avant stockage (bcrypt)
+   - CORS protège l'API contre les accès non autorisés depuis d'autres domaines
+   - Les variables d'environnement (.env) gardent les secrets hors du code
+   - Le pattern MVC (Model-View-Controller) organise le code de manière logique
+
+**Cette API backend est le pilier central qui permet à l'application Burger Town de fonctionner de manière sécurisée, scalable et maintenable.**
+
 ---
 
 ## 🏗️ Architecture

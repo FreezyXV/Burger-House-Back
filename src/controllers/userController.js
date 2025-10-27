@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Création d'un Utilisateur
-exports.registerUser = async (req, res) => {
+exports.registerUser = async (req, res, next) => {
   try {
     const {
       username,
@@ -50,15 +50,12 @@ exports.registerUser = async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully." });
   } catch (error) {
-    res.status(500).json({
-      message: "An error occurred during registration.",
-      error: error.message,
-    });
+    next(error);
   }
 };
 
 // Identification d'un Utilisateur
-exports.loginUser = async (req, res) => {
+exports.loginUser = async (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -102,59 +99,55 @@ exports.loginUser = async (req, res) => {
 
     res.json({ message: "Login successful", token, user: userForResponse });
   } catch (error) {
-    console.error("Login error:", error);
-    res.status(500).json({
-      message: "An error occurred during the login process.",
-      error: error.message,
-    });
+    next(error);
   }
 };
 
 // Afficher tous les Utilisateurs
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     res.json(users);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 // Afficher  un Utilisateur par son ID
-exports.getUser = async (req, res) => {
+exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 // Actualiser les informations d'un Utilisateur
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res, next) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     res.json(updatedUser);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    next(error);
   }
 };
 
 // Supprimer un Utilisateur
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.json({ message: "User deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
 // Changer le Mot de Passe lié à l'utilisateur
-exports.changePassword = async (req, res) => {
+exports.changePassword = async (req, res, next) => {
   const { userId } = req.params;
   const { currentPassword, newPassword } = req.body;
 
@@ -182,8 +175,6 @@ exports.changePassword = async (req, res) => {
 
     res.json({ message: "Password changed successfully." });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error changing password", error: error.message });
+    next(error);
   }
 };

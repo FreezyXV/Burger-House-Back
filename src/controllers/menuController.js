@@ -2,31 +2,28 @@
 const Menu = require("../models/menu");
 
 // Créer un Menu
-exports.createMenu = async (req, res) => {
+exports.createMenu = async (req, res, next) => {
   try {
     const newMenu = new Menu(req.body);
     const savedMenu = await newMenu.save();
     res.status(201).json(savedMenu);
   } catch (error) {
-    const statusCode = error.name === "ValidationError" ? 400 : 500;
-    res.status(statusCode).json({ message: error.message });
+    next(error);
   }
 };
 
 // Afficher tous les Menus
-exports.getAllMenus = async (req, res) => {
+exports.getAllMenus = async (req, res, next) => {
   try {
     const menus = await Menu.find({});
     res.status(200).json(menus);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "An error occurred while fetching menus." });
+    next(error);
   }
 };
 
 // Afficher un Menu par son ID
-exports.getMenuById = async (req, res) => {
+exports.getMenuById = async (req, res, next) => {
   try {
     const menu = await Menu.findById(req.params.id);
     if (!menu) {
@@ -34,14 +31,12 @@ exports.getMenuById = async (req, res) => {
     }
     res.status(200).json(menu);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "An error occurred while fetching the menu." });
+    next(error);
   }
 };
 
 // Mettre à jour un Menu
-exports.editMenu = async (req, res) => {
+exports.editMenu = async (req, res, next) => {
   try {
     const updatedMenu = await Menu.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -51,13 +46,12 @@ exports.editMenu = async (req, res) => {
     }
     res.status(200).json(updatedMenu);
   } catch (error) {
-    const statusCode = error.name === "ValidationError" ? 400 : 500;
-    res.status(statusCode).json({ message: error.message });
+    next(error);
   }
 };
 
 // Supprimer un Menu
-exports.deleteMenu = async (req, res) => {
+exports.deleteMenu = async (req, res, next) => {
   try {
     const menu = await Menu.findByIdAndDelete(req.params.id);
     if (!menu) {
@@ -65,6 +59,6 @@ exports.deleteMenu = async (req, res) => {
     }
     res.status(200).json({ message: "Menu deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred during deletion." });
+    next(error);
   }
 };

@@ -9,7 +9,10 @@ const auth = (req, res, next) => {
   // Vérifie si le header d'autorisation est présent
   if (!tokenHeader) {
     // Si aucun token n'est fourni, renvoie une réponse 401 (Unauthorized)
-    return res.status(401).json({ message: "Access denied. No token provided." });
+    return next({
+      statusCode: 401,
+      message: "Access denied. No token provided.",
+    });
   }
 
   try {
@@ -18,7 +21,7 @@ const auth = (req, res, next) => {
     // Vérifie que le format du token est correct (doit être "Bearer token")
     if (parts.length !== 2 || parts[0] !== "Bearer") {
       // Si le format est incorrect, renvoie une réponse 401 (Unauthorized)
-      return res.status(401).json({ message: "Invalid token format." });
+      return next({ statusCode: 401, message: "Invalid token format." });
     }
 
     // Récupère le token proprement dit
@@ -39,7 +42,7 @@ const auth = (req, res, next) => {
   } catch (error) {
     // En cas d'erreur (par exemple, token invalide), journalise l'erreur et renvoie une réponse 401 (Unauthorized)
     console.error("Authentication Error:", error.message);
-    res.status(401).json({ message: "Invalid token.", error: error.message });
+    next({ statusCode: 401, message: "Invalid token.", originalError: error });
   }
 };
 
