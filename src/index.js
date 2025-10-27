@@ -7,6 +7,7 @@ const productRoutes = require("./routes/productRoutes"); // Routes pour la gesti
 const menuRoutes = require("./routes/menuRoutes"); // Routes pour la gestion des menus
 const userRoutes = require("./routes/userRoutes"); // Routes pour la gestion des utilisateurs
 const orderRoutes = require("./routes/orderRoutes"); // Routes pour la gestion des commandes
+const errorHandler = require("./middlewares/errorHandler"); // Importation du middleware de gestion d'erreurs centralisé
 
 // Chargement des variables d'environnement à partir du fichier .env
 dotenv.config();
@@ -16,10 +17,12 @@ const app = express();
 const PORT = process.env.PORT || 2233; // Définition du port sur lequel le serveur écoute
 
 // Configuration du middleware CORS pour autoriser les requêtes provenant du frontend
-app.use(cors({
-  origin: "https://burger-house-front.vercel.app", // Origine autorisée
-  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
-}));
+app.use(
+  cors({
+    origin: "https://burger-house-front.vercel.app", // Origine autorisée
+    optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+  })
+);
 
 // Middleware pour parser les corps de requête JSON
 app.use(express.json());
@@ -45,10 +48,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 
 // Middleware global de gestion des erreurs
-app.use((err, req, res, next) => {
-  console.error(err.stack); // Journalise la pile d'erreurs
-  res.status(err.status || 500).send({ message: err.message || "Something broke!" }); // Envoie une réponse d'erreur au client
-});
+app.use(errorHandler);
 
 // Démarrage du serveur pour écouter sur le port défini
 app.listen(PORT, "0.0.0.0", () => {
