@@ -4,8 +4,6 @@
 ARG NODE_VERSION=23.9.0
 FROM node:${NODE_VERSION}-slim AS base
 
-LABEL fly_launch_runtime="Node.js"
-
 # Node.js app lives here
 WORKDIR /app
 
@@ -22,7 +20,7 @@ RUN apt-get update -qq && \
 
 # Install node modules
 COPY package-lock.json package.json ./
-RUN npm ci
+RUN npm ci --only=production
 
 # Copy application code
 COPY . .
@@ -34,6 +32,6 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 2233
+# Railway will set PORT environment variable dynamically
+EXPOSE $PORT
 CMD [ "npm", "run", "start" ]
