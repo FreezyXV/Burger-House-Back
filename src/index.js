@@ -50,9 +50,21 @@ console.log("CORS allowed origins:", allowedOrigins);
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) {
         return callback(null, true);
       }
+
+      // Allow exact matches from allowedOrigins
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Allow Vercel preview deployments (*.vercel.app)
+      if (origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+
       return callback(
         new Error(`Origin ${origin} is not allowed by CORS policy.`)
       );

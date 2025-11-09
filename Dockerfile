@@ -32,6 +32,7 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
-# Railway will set PORT environment variable dynamically
-EXPOSE $PORT
+# Expose port 8080 (Railway's default)
+# Railway will inject the actual PORT env var at runtime
+EXPOSE 8080
 CMD [ "npm", "run", "start" ]

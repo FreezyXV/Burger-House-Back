@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: burger-house-back
+    env: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
