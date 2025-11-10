@@ -23,7 +23,11 @@ exports.createProduct = async (req, res, next) => {
 // Afficher tous les Produits
 exports.getAllProducts = async (req, res, next) => {
   try {
-    const products = await Product.find({});
+    const filter = {};
+    if (req.query.type) {
+      filter.type = req.query.type;
+    }
+    const products = await Product.find(filter);
     res.status(200).json(products);
   } catch (error) {
     next(error);

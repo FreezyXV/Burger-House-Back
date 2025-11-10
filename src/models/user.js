@@ -12,10 +12,11 @@ const userSchema = new mongoose.Schema({
   city: String,
   dateOfBirth: Date,
   isAdmin: { type: Boolean, default: false },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
 });
 
 module.exports = mongoose.model("User", userSchema);
-
 
 
 
